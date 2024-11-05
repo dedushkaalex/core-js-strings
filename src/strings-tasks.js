@@ -547,101 +547,84 @@ function encodeToRot13(str) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
+
+const deck = [
+  [
+    'A♣',
+    '2♣',
+    '3♣',
+    '4♣',
+    '5♣',
+    '6♣',
+    '7♣',
+    '8♣',
+    '9♣',
+    '10♣',
+    'J♣',
+    'Q♣',
+    'K♣',
+  ],
+  [
+    'A♦',
+    '2♦',
+    '3♦',
+    '4♦',
+    '5♦',
+    '6♦',
+    '7♦',
+    '8♦',
+    '9♦',
+    '10♦',
+    'J♦',
+    'Q♦',
+    'K♦',
+  ],
+  [
+    'A♥',
+    '2♥',
+    '3♥',
+    '4♥',
+    '5♥',
+    '6♥',
+    '7♥',
+    '8♥',
+    '9♥',
+    '10♥',
+    'J♥',
+    'Q♥',
+    'K♥',
+  ],
+  [
+    'A♠',
+    '2♠',
+    '3♠',
+    '4♠',
+    '5♠',
+    '6♠',
+    '7♠',
+    '8♠',
+    '9♠',
+    '10♠',
+    'J♠',
+    'Q♠',
+    'K♠',
+  ],
+];
+
+const mapDeck = Object.freeze(
+  deck.flat().reduce((acc, val, idx) => {
+    return {
+      ...acc,
+      [val]: idx,
+    };
+  }, {})
+);
 function getCardId(value) {
-  const typeCard = value.split('').at(-1);
-
-  const COUNT_CARD_PER_COLUMN = 13;
-
-  const typeCardMapperIds = {
-    '♣': 0,
-    '♦': 1,
-    '♥': 2,
-    '♠': 3,
-  };
-
-  const deck = [
-    [
-      'A♣',
-      '2♣',
-      '3♣',
-      '4♣',
-      '5♣',
-      '6♣',
-      '7♣',
-      '8♣',
-      '9♣',
-      '10♣',
-      'J♣',
-      'Q♣',
-      'K♣',
-    ],
-    [
-      'A♦',
-      '2♦',
-      '3♦',
-      '4♦',
-      '5♦',
-      '6♦',
-      '7♦',
-      '8♦',
-      '9♦',
-      '10♦',
-      'J♦',
-      'Q♦',
-      'K♦',
-    ],
-    [
-      'A♥',
-      '2♥',
-      '3♥',
-      '4♥',
-      '5♥',
-      '6♥',
-      '7♥',
-      '8♥',
-      '9♥',
-      '10♥',
-      'J♥',
-      'Q♥',
-      'K♥',
-    ],
-    [
-      'A♠',
-      '2♠',
-      '3♠',
-      '4♠',
-      '5♠',
-      '6♠',
-      '7♠',
-      '8♠',
-      '9♠',
-      '10♠',
-      'J♠',
-      'Q♠',
-      'K♠',
-    ],
-  ];
-
-  const currentColumn = deck.at(typeCardMapperIds[typeCard]);
-
-  const getCurrentCardCount = (
-    countCardPerColumn,
-    countColumn,
-    cardIndexInColumn
-  ) => {
-    return countCardPerColumn * countColumn + cardIndexInColumn;
-  };
-
-  for (let i = 0; i < currentColumn.length; i += 1) {
-    if (value === currentColumn[i])
-      return getCurrentCardCount(
-        COUNT_CARD_PER_COLUMN,
-        typeCardMapperIds[typeCard],
-        i
-      );
+  if (!(value in mapDeck)) {
+    return null;
   }
 
-  return null;
+  return mapDeck[value];
 }
 
 module.exports = {
